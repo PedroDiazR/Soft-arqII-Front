@@ -20,7 +20,7 @@ function ResultBusq() {
     },
   ];
 
-  // Datos de búsqueda seleccionados (puedes obtenerlos de la página anterior)
+  // Datos de búsqueda seleccionados en la página anterior
   const ciudad = 'Córdoba';
   const fechaInicio = '11/11/11';
   const fechaFinal = '12/12/12';

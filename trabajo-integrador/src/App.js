@@ -2,6 +2,8 @@ import React from 'react';
 import { Container, Row, Col, Navbar, Nav, Form, Button } from 'react-bootstrap';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import ResultBusq from './ResultBusq';
+import HotelDetail from './HotelDetail';
+import Confirmation from './Confirmation';
 
 function App() {
   return (
@@ -14,6 +16,7 @@ function App() {
             <Nav className="ml-auto">
               <Nav.Link href="/">Inicio</Nav.Link>
               <Nav.Link href="/resultados">Búsqueda</Nav.Link>
+              <Nav.Link href="/detalle">Hotel</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
@@ -51,6 +54,9 @@ function App() {
             </Container>
           } />
           <Route path="/resultados" element={<ResultBusq />} />
+          <Route path="/detalle" element={<HotelDetail />} />
+          <Route path="/confirmacion/exito" element={<Confirmation isSuccessful={true} />} />
+          <Route path="/confirmacion/rechazo" element={<Confirmation isSuccessful={false} />} />
         </Routes>
 
         <footer className="mt-5 p-3 bg-dark text-light">
