@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import ResultBusq from './ResultBusq';
 import HotelDetail from './HotelDetail';
 import Confirmation from './Confirmation';
+import HotelCreation from './HotelCreation';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
               <Nav.Link href="/">Inicio</Nav.Link>
               <Nav.Link href="/resultados">Búsqueda</Nav.Link>
               <Nav.Link href="/detalle">Hotel</Nav.Link>
+              <Nav.Link href="/creacion">Registrar Hotel</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
@@ -55,6 +57,7 @@ function App() {
           } />
           <Route path="/resultados" element={<ResultBusq />} />
           <Route path="/detalle" element={<HotelDetail />} />
+          <Route path="/creacion" element={<HotelCreation />} />
           <Route path="/confirmacion/exito" element={<Confirmation isSuccessful={true} />} />
           <Route path="/confirmacion/rechazo" element={<Confirmation isSuccessful={false} />} />
         </Routes>
