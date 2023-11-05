@@ -1,7 +1,8 @@
 import React from 'react';
 import { Container, Row, Col, Navbar, Nav, Form, Button } from 'react-bootstrap';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import ResultBusq from './ResultBusq';
+import SignIn from './SignIn';
+import SearchResult from './SearchResult';
 import HotelDetail from './HotelDetail';
 import Confirmation from './Confirmation';
 import HotelCreation from './HotelCreation';
@@ -10,17 +11,23 @@ function App() {
   return (
     <Router>
       <div>
-        <Navbar bg="light" expand="lg">
-          <Navbar.Brand href="/">Página</Navbar.Brand>
+        <Navbar bg="light" expand="lg" style={{ marginBottom: '20px' }}>
+          <Navbar.Brand style={{ marginLeft: '20px' }}>
+            Página
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">
               <Nav.Link href="/">Inicio</Nav.Link>
               <Nav.Link href="/resultados">Búsqueda</Nav.Link>
               <Nav.Link href="/detalle">Hotel</Nav.Link>
-              <Nav.Link href="/creacion">Registrar Hotel</Nav.Link>
             </Nav>
           </Navbar.Collapse>
+            <Nav className="mr-auto">
+              <Nav.Link href="/signin" style={{ marginRight: '20px' }}>
+                Sign In
+              </Nav.Link>
+            </Nav>
         </Navbar>
 
         <Routes>
@@ -49,13 +56,14 @@ function App() {
                     </Form.Group>
                   </Col>
                 </Row>
-                <Button variant="primary" type="submit">
-                  Buscar Hoteles
+                <Button variant="primary" type="submit" style={{ marginTop: '20px' }}>
+                    Buscar Hoteles
                 </Button>
               </Form>
             </Container>
           } />
-          <Route path="/resultados" element={<ResultBusq />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/resultados" element={<SearchResult />} />
           <Route path="/detalle" element={<HotelDetail />} />
           <Route path="/creacion" element={<HotelCreation />} />
           <Route path="/confirmacion/exito" element={<Confirmation isSuccessful={true} />} />

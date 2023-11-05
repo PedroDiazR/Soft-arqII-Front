@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Navbar, Card, Row, Col } from 'react-bootstrap';
 import { FaSearch, FaCalendar, FaCalendarAlt } from 'react-icons/fa';
 
-function ResultBusq() {
+function SearchResult() {
   const hotelData = [
     {
       nombre: 'Hotel 1',
@@ -78,4 +78,4 @@ function ResultBusq() {
   );
 }
 
-export default ResultBusq;
+export default SearchResult;
