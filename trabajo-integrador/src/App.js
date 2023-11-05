@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Row, Col, Navbar, Nav, Form, Button } from 'react-bootstrap';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import SignIn from './SignIn';
+import LogIn from './LogIn';
 import SearchResult from './SearchResult';
 import HotelDetail from './HotelDetail';
 import Confirmation from './Confirmation';
@@ -24,6 +25,9 @@ function App() {
             </Nav>
           </Navbar.Collapse>
             <Nav className="mr-auto">
+              <Nav.Link href="/login">
+                Log In
+              </Nav.Link>
               <Nav.Link href="/signin" style={{ marginRight: '20px' }}>
                 Sign In
               </Nav.Link>
@@ -62,6 +66,7 @@ function App() {
               </Form>
             </Container>
           } />
+          <Route path="/login" element={<LogIn />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/resultados" element={<SearchResult />} />
           <Route path="/detalle" element={<HotelDetail />} />

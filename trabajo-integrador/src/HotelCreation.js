@@ -90,7 +90,7 @@ function HotelCreation() {
 
     return (
         <Container>
-          <h2>Registro de hotel</h2>
+          <h2 style={{ marginBottom: '20px' }}>Registro de hotel</h2>
           <Row>
             <Col md={6}>
               <input
