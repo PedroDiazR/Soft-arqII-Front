@@ -1,16 +1,16 @@
 import { Container, Row, Col, Navbar, Nav, Form, Button } from 'react-bootstrap';
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { postUser } from './Api';
 //import Cookies from 'js-cookie';
 
-const SignIn = ({ onLogin }) => {
+function SignIn() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     dni: '',
-    direcc: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -19,59 +19,13 @@ const SignIn = ({ onLogin }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [showError, setShowError] = useState(false);
 
-  const postUser = async () => {
-    createRequestBody();
-    try {
-        const response = await fetch("http://localhost:8003/insertUser", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json", // Specify that you're sending JSON data
-            },
-            body: JSON.stringify({ // Convert the request body to a JSON string
-                name: formData.firstName,
-                last_name: formData.lastName,
-                address: formData.direcc,
-                dni: formData.dni,
-                email: formData.email,
-                password: formData.password,
-            }),
-        });
-        console.log(body.JSON);
-
-        if (response.status === 200) {
-            console.log("User uploaded successfully.");
-            navigate('/');
-        } else if (response.status === 400) {
-          setErrorMessage('El correo electrónico ya está en uso');
-          setShowError(true);
-          return;
-        } else {
-          setErrorMessage('Error al registrar el usuario');
-        }
-    } catch (error) {
-        console.error("Error while uploading user:", error);
-    }
-  };
-
-  const createRequestBody = () => {
-    const requestBody = {
-      name: formData.firstName,
-      last_name: formData.lastName,
-      address: formData.direcc,
-      dni: formData.dni,
-      email: formData.email,
-      password: formData.password,
-    };
-    console.log("Request Body:", requestBody);
-  };
-
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
 
   const handleSubmit = async (event) => {
-    //event.preventDefault();
+    event.preventDefault();
   
     if (formData.password !== formData.confirmPassword) {
       // Las contraseñas no coinciden, muestra un mensaje de error
@@ -79,13 +33,50 @@ const SignIn = ({ onLogin }) => {
       setShowError(true);
       return;
     }
+  
+    try {
+      
+      const response = await postUser(
+        formData.firstName,
+        formData.lastName,
+        formData.dni,
+        formData.password,
+        formData.email,
+        
+      ) ;
 
-    postUser();
-     
+      if (response.status === 200) {
+        console.log(response)
+        /*
+        const user = {
+          email: response.data.email,
+          name: response.data.name,
+          lastName: response.data.lastName,
+          dni: response.data.dni,
+          id: response.data.id,
+          token: response.data.token
+          };
+          
+        Cookies.set('userData', JSON.stringify(user));
+        onLogin(formData.firstName, formData); // Llama a la función onLogin pasando el nombre del usuario registrado y los datos del formulario
+        */
+        navigate('/'); // Redirige al usuario a la página principal después de registrar exitosamente
+      } else if (response.status === 400) {
+        setErrorMessage('El correo electrónico o DNI ya está en uso');
+        setShowError(true);
+        return;
+      } else {
+        setErrorMessage('Error al registrar el usuario');
+      }
+    } catch(error) {
+      
+    }
+    
+    // Restablece los valores y oculta el mensaje de error
+    
     setFormData({
       firstName: '',
       lastName: '',
-      direcc: '',
       dni: '',
       email: '',
       password: '',
@@ -123,15 +114,6 @@ const SignIn = ({ onLogin }) => {
             </Form.Group>
           </Col>
         </Row>
-        <Form.Group>
-          <Form.Label>Direccion</Form.Label>
-          <Form.Control
-            type="text"
-            name="direcc"
-            value={formData.direcc}
-            onChange={handleChange}
-          />
-        </Form.Group>
         <Form.Group>
           <Form.Label>DNI</Form.Label>
           <Form.Control
