@@ -13,10 +13,12 @@ function HotelCreation() {
     const [description, setDescription] = useState("");
     const [selectedAmenities, setSelectedAmenities] = useState([]);
     const amenitiesOptions = [
-        { value: 'Piscina', label: 'Piscina' },
-        { value: 'Wifi gratuito', label: 'Wifi gratuito' },
-        { value: 'Gimnasio', label: 'Gimnasio' },
-        { value: 'Restaurante', label: 'Restaurante' },
+        { value: 'Piscina', label: 'Piscina'},
+        { value: 'Wifi gratuito', label: 'Wifi gratuito'},
+        { value: 'Gimnasio', label: 'Gimnasio'},
+        { value: 'Restaurante', label: 'Restaurante'},
+        { value: 'Spa', label: 'Spa'},
+        { value: 'Estacionamiento', label: 'Restaurante'},
       ];
 
     const handleImageChange = (e) => {

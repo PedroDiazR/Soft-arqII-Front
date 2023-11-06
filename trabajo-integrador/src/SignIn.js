@@ -1,15 +1,16 @@
+import { Container, Row, Col, Navbar, Nav, Form, Button } from 'react-bootstrap';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-//import { postUser } from './api';
+import { useNavigate, Link } from 'react-router-dom';
 //import Cookies from 'js-cookie';
 
-const Register = ({ onLogin }) => {
+const SignIn = ({ onLogin }) => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     dni: '',
+    direcc: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -18,13 +19,59 @@ const Register = ({ onLogin }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [showError, setShowError] = useState(false);
 
+  const postUser = async () => {
+    createRequestBody();
+    try {
+        const response = await fetch("http://localhost:8003/insertUser", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json", // Specify that you're sending JSON data
+            },
+            body: JSON.stringify({ // Convert the request body to a JSON string
+                name: formData.firstName,
+                last_name: formData.lastName,
+                address: formData.direcc,
+                dni: formData.dni,
+                email: formData.email,
+                password: formData.password,
+            }),
+        });
+        console.log(body.JSON);
+
+        if (response.status === 200) {
+            console.log("User uploaded successfully.");
+            navigate('/');
+        } else if (response.status === 400) {
+          setErrorMessage('El correo electrónico ya está en uso');
+          setShowError(true);
+          return;
+        } else {
+          setErrorMessage('Error al registrar el usuario');
+        }
+    } catch (error) {
+        console.error("Error while uploading user:", error);
+    }
+  };
+
+  const createRequestBody = () => {
+    const requestBody = {
+      name: formData.firstName,
+      last_name: formData.lastName,
+      address: formData.direcc,
+      dni: formData.dni,
+      email: formData.email,
+      password: formData.password,
+    };
+    console.log("Request Body:", requestBody);
+  };
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    //event.preventDefault();
   
     if (formData.password !== formData.confirmPassword) {
       // Las contraseñas no coinciden, muestra un mensaje de error
@@ -32,49 +79,13 @@ const Register = ({ onLogin }) => {
       setShowError(true);
       return;
     }
-/*  
-    try {
-      
-      const response = await postUser(
-        formData.firstName,
-        formData.lastName,
-        formData.dni,
-        formData.password,
-        formData.email,
-        
-      ) ;
 
-      if (response.status === 200) {
-        console.log(response)
-        const user = {
-          email: response.data.email,
-          name: response.data.name,
-          lastName: response.data.lastName,
-          dni: response.data.dni,
-          id: response.data.id,
-          token: response.data.token
-          };
-          
-        Cookies.set('userData', JSON.stringify(user));
-        onLogin(formData.firstName, formData); // Llama a la función onLogin pasando el nombre del usuario registrado y los datos del formulario
-        navigate('/'); // Redirige al usuario a la página principal después de registrar exitosamente
-      } else if (response.status === 400) {
-        setErrorMessage('El correo electrónico o DNI ya está en uso');
-        setShowError(true);
-        return;
-      } else {
-        setErrorMessage('Error al registrar el usuario');
-      }
-    } catch(error) {
-      
-    }
-*/    
-  
-    // Restablece los valores y oculta el mensaje de error
-    
+    postUser();
+     
     setFormData({
       firstName: '',
       lastName: '',
+      direcc: '',
       dni: '',
       email: '',
       password: '',
@@ -85,82 +96,85 @@ const Register = ({ onLogin }) => {
   };
 
   return (
-    <div className="container">
-      <h1 id="h1">Sign In</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="firstName">Nombre</label>
-          <input
+    <Container className="mt-5">
+      <h1>Registro</h1>
+      <Form onSubmit={handleSubmit}>
+        <Row>
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label>Nombre</Form.Label>
+              <Form.Control
+                type="text"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+              />
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label>Apellido</Form.Label>
+              <Form.Control
+                type="text"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+        <Form.Group>
+          <Form.Label>Direccion</Form.Label>
+          <Form.Control
             type="text"
-            className="form-control"
-            id="firstName"
-            name="firstName"
-            value={formData.firstName}
+            name="direcc"
+            value={formData.direcc}
             onChange={handleChange}
           />
-        </div>
-        <div className="form-group">
-          <label htmlFor="lastName">Apellido</label>
-          <input
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>DNI</Form.Label>
+          <Form.Control
             type="text"
-            className="form-control"
-            id="lastName"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="dni">DNI</label>
-          <input
-            type="text"
-            className="form-control"
-            id="dni"
             name="dni"
             value={formData.dni}
             onChange={handleChange}
           />
-        </div>
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>Email</Form.Label>
+          <Form.Control
             type="email"
-            className="form-control"
-            id="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
           />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Contraseña</label>
-          <input
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>Contraseña</Form.Label>
+          <Form.Control
             type="password"
-            className="form-control"
-            id="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
           />
-        </div>
-        <div className="form-group">
-          <label htmlFor="confirmPassword">Confirmar Contraseña</label>
-          <input
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>Confirmar Contraseña</Form.Label>
+          <Form.Control
             type="password"
-            className="form-control"
-            id="confirmPassword"
             name="confirmPassword"
             value={formData.confirmPassword}
             onChange={handleChange}
           />
-        </div>
-        {showError && <p style={{ color: 'red', marginBottom: '-25px' }}>{errorMessage}</p>}
-        <button type="submit" className="btn btn-primary" style={{ marginTop: '40px' }}>
+        </Form.Group>
+        {showError && <p style={{ color: 'red' }}>{errorMessage}</p>}
+        <Button variant="primary" type="submit">
           Registrarse
-        </button>
-      </form>
-    </div>
+        </Button>
+      </Form>
+    </Container>
   );
-};
+}
 
-export default Register;
+export default SignIn;
